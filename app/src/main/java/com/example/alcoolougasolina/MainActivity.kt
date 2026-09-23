@@ -36,6 +36,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +72,14 @@ fun TelaUnica (modifier: Modifier = Modifier
     var rende by rememberSaveable { mutableStateOf(false) }
     var calculado by rememberSaveable { mutableStateOf(false) }
 
+    var tentouEnviar by rememberSaveable() { mutableStateOf(false) }
+    val campoAlcoolInvalido = textoAlcool.isBlank()
+    val campoGasolinaInvalido = textoGasolina.isBlank()
+    val erroCampoAlcoolVazio = tentouEnviar && campoAlcoolInvalido
+    val erroCampoGasolinaVazio = tentouEnviar && campoGasolinaInvalido
+
+    val proibidos = setOf(',', '-', ' ')
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -79,14 +89,34 @@ fun TelaUnica (modifier: Modifier = Modifier
         ) {}
         OutlinedTextField(
             value = textoAlcool,
-            onValueChange = { novoTexto -> textoAlcool = novoTexto },
-            label = { Text("Preço do Álcool (R$)") },
+            onValueChange = { novoTexto ->
+                if (novoTexto.none {caractere -> caractere in proibidos }) {
+                    textoAlcool = novoTexto
+                } },
+            label = { Text("Preço do Álcool (R$0.00)") },
+            isError = erroCampoAlcoolVazio,
+            supportingText = {
+                if (erroCampoAlcoolVazio) {
+                    Text("Preencha o valor do Álcool")
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
         )
         OutlinedTextField(
             value = textoGasolina,
-            onValueChange = { novoTexto -> textoGasolina = novoTexto },
-            label = { Text("Preço da Gasolina (R$)") },
+            onValueChange = { novoTexto ->
+                if (novoTexto.none {caractere -> caractere in proibidos }) {
+                    textoGasolina = novoTexto
+                } },
+            label = { Text("Preço da Gasolina (R$0.00)") },
+            isError = erroCampoGasolinaVazio,
+            supportingText = {
+                if (erroCampoGasolinaVazio) {
+                    Text("Preencha o valor da Gasolina")
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
         )
         OutlinedTextField(
@@ -120,15 +150,18 @@ fun TelaUnica (modifier: Modifier = Modifier
         Button(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp, vertical = 8.dp),
             onClick = {
-                val valorAlcool = textoAlcool.toDouble()
-                val valorGasolina = textoGasolina.toDouble()
+                val valorAlcool = textoAlcool.toDoubleOrNull()
+                val valorGasolina = textoGasolina.toDoubleOrNull()
+                tentouEnviar = true
 
-                rende = if (ligado) {
-                    valorGasolina >= valorAlcool * 0.75
-                } else {
-                    valorGasolina >= valorAlcool * 0.7
+                if (valorGasolina != null && valorAlcool != null) {
+                    rende = if (ligado) {
+                        valorGasolina * 0.75 >= valorAlcool
+                    } else {
+                        valorGasolina * 0.7 >= valorAlcool
+                    }
+                    calculado = true
                 }
-                calculado = true
             }
         ) {
             Text(stringResource(R.string.calcular))
