@@ -10,4 +10,6 @@
     <color name="red">#FF0000</color>
     <color name="orange">#FF8400</color>
     <color name="washed_orange">#FFB05C</color>
+    <color name="dark_olive_green">#2D4700</color>
+    <color name="spring_green">#24FF74</color>
 </resources>

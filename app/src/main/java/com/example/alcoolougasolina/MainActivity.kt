@@ -37,7 +37,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwitchDefaults
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +49,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AlcoolOuGasolinaTheme {
-                TelaUnica()
+                Surface(
+                    color = MaterialTheme.colorScheme.background
+                ) { TelaUnica() }
             }
         }
     }
@@ -128,27 +134,44 @@ fun TelaUnica (modifier: Modifier = Modifier
 
         Row (
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (ligado) {
-                Text (
-                    text = porcentagem
-                )
-            }
-            Switch(
-                checked = ligado,
-                onCheckedChange = { novoEstado -> ligado = novoEstado },
-                modifier = Modifier.padding(horizontal = 4.dp)
+            Text(
+                text = "Taxa de Rendibilidade"
             )
-            if (!ligado) {
-                Text (
-                    text = porcentagem
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (ligado) {
+                    Text (
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        text = porcentagem
+                    )
+                }
+                Switch(
+                    checked = ligado,
+                    onCheckedChange = { novoEstado -> ligado = novoEstado },
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    colors = SwitchDefaults.colors(
+                        checkedTrackColor = colorResource(R.color.spring_green),
+                        checkedThumbColor = colorResource(R.color.dark_olive_green)
+                    )
                 )
+                if (!ligado) {
+                    Text (
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        text = porcentagem
+                    )
+                }
             }
         }
 
         Button(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp, vertical = 8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.spring_green)
+            ),
             onClick = {
                 val valorAlcool = textoAlcool.toDoubleOrNull()
                 val valorGasolina = textoGasolina.toDoubleOrNull()
