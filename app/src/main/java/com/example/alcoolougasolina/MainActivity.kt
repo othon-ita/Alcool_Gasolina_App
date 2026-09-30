@@ -154,8 +154,8 @@ fun TelaUnica (modifier: Modifier = Modifier
                     onCheckedChange = { novoEstado -> ligado = novoEstado },
                     modifier = Modifier.padding(horizontal = 4.dp),
                     colors = SwitchDefaults.colors(
-                        checkedTrackColor = colorResource(R.color.spring_green),
-                        checkedThumbColor = colorResource(R.color.dark_olive_green)
+                        checkedTrackColor = MaterialTheme.colorScheme.primary,
+                        checkedThumbColor = MaterialTheme.colorScheme.secondary
                     )
                 )
                 if (!ligado) {
@@ -170,7 +170,7 @@ fun TelaUnica (modifier: Modifier = Modifier
         Button(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp, vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.spring_green)
+                containerColor = MaterialTheme.colorScheme.primary
             ),
             onClick = {
                 val valorAlcool = textoAlcool.toDoubleOrNull()
@@ -206,8 +206,8 @@ fun TelaUnica (modifier: Modifier = Modifier
                             .fillMaxWidth()
                             .height(81.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(colorResource(R.color.washed_orange))
-                            .border(2.dp, colorResource(R.color.orange), RoundedCornerShape(16.dp)),
+                            .background(MaterialTheme.colorScheme.primary)
+                            .border(2.dp,MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(

@@ -2,7 +2,8 @@ package com.example.alcoolougasolina.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
+val SpringGreen = Color(0xFF24FF74)
+val DarkOliveGreen = Color(0xFF2D4700)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 val Black = Color(0xFF000000)
