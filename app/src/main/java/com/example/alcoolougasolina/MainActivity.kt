@@ -48,25 +48,38 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AlcoolOuGasolinaTheme {
-                Surface(
-                    color = MaterialTheme.colorScheme.background
-                ) { TelaUnica() }
-            }
+            AlcoolOuGasolinaApp()
         }
     }
 }
 
 @Composable
-fun AlcoolOuGasolinaApp () {
-    TelaUnica()
+fun AlcoolOuGasolinaApp() {
+    AlcoolOuGasolinaTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) { TelaUnica() }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TelaUnica (modifier: Modifier = Modifier
-    .fillMaxSize()
-    .wrapContentSize(Alignment.Center)) {
+fun TelaUnicaPreview() {
+    AlcoolOuGasolinaTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            TelaUnica()
+        }
+    }
+}
+
+@Composable
+fun TelaUnica(
+    modifier: Modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center)
+) {
     var textoAlcool by rememberSaveable { mutableStateOf("") }
     var textoGasolina by rememberSaveable { mutableStateOf("") }
     var textoPosto by rememberSaveable { mutableStateOf("") }
