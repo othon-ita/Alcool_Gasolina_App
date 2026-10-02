@@ -9,5 +9,6 @@ data class Posto(
     val valorAlcool: Double,
     val valorGasolina: Double,
     val nomePosto: String,
+    val dataCadastro: String,
     val localizacao: String
 )

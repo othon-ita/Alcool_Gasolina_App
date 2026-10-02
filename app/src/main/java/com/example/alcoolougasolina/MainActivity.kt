@@ -46,6 +46,11 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.sp
+import android.content.Intent
+import com.example.alcoolougasolina.u_interface.TelaPostos
+import androidx.core.content.ContextCompat.startActivity
+import com.example.alcoolougasolina.u_interface.PostosActivity
+import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

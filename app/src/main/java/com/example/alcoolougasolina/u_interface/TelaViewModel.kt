@@ -1,0 +1,57 @@
+package com.example.alcoolougasolina.u_interface
+
+import com.example.alcoolougasolina.data.PostoRepository
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
+import com.example.alcoolougasolina.data.Posto
+import kotlinx.coroutines.flow.stateIn
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.launch
+
+class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
+    val postos: StateFlow<List<Posto>> = repository.todosPostos
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
+
+    fun adicionar(
+        valorAlcool: Double,
+        valorGasolina: Double,
+        nomePosto: String,
+        dataCadastro: String,
+        localizacao: String
+    ) = viewModelScope.launch {
+        repository.inserir(Posto(
+            valorAlcool = valorAlcool,
+            valorGasolina = valorGasolina,
+            nomePosto = nomePosto,
+            dataCadastro = dataCadastro,
+            localizacao = localizacao
+        ))
+    }
+
+    fun atualizar(
+        valorAlcool: Double,
+        valorGasolina: Double,
+        nomePosto: String,
+        dataCadastro: String,
+        localizacao: String
+    ) = viewModelScope.launch {
+        repository.atualizar(Posto(
+            valorAlcool = valorAlcool,
+            valorGasolina = valorGasolina,
+            nomePosto = nomePosto,
+            dataCadastro = dataCadastro,
+            localizacao = localizacao
+        ))
+    }
+
+    fun deletar(
+        posto: Posto
+    ) = viewModelScope.launch {
+        repository.deletar(posto)
+    }
+}
