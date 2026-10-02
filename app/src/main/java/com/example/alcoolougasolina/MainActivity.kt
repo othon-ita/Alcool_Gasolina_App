@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,6 +43,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,22 +93,27 @@ fun TelaUnica(
         else -> stringResource(R.string.rendimento_70)
     }
     var rende by rememberSaveable { mutableStateOf(false) }
-    var calculado by rememberSaveable { mutableStateOf(false) }
-
-    var tentouEnviar by rememberSaveable() { mutableStateOf(false) }
-    val campoAlcoolInvalido = textoAlcool.isBlank()
-    val campoGasolinaInvalido = textoGasolina.isBlank()
-    val erroCampoAlcoolVazio = tentouEnviar && campoAlcoolInvalido
-    val erroCampoGasolinaVazio = tentouEnviar && campoGasolinaInvalido
-
     val proibidos = setOf(',', '-', ' ')
+
+    if (textoAlcool.isNotBlank() && textoGasolina.isNotBlank()) {
+        val valorAlcool = textoAlcool.toDouble()
+        val valorGasolina = textoGasolina.toDouble()
+
+        rende = if (ligado) {
+            valorGasolina * 0.75 >= valorAlcool
+        } else {
+            valorGasolina * 0.7 >= valorAlcool
+        }
+    }
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box (
-            modifier = Modifier.fillMaxWidth().height(120.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
         ) {}
         OutlinedTextField(
             value = textoAlcool,
@@ -113,14 +122,18 @@ fun TelaUnica(
                     textoAlcool = novoTexto
                 } },
             label = { Text("Preço do Álcool (R$0.00)") },
-            isError = erroCampoAlcoolVazio,
-            supportingText = {
-                if (erroCampoAlcoolVazio) {
-                    Text("Preencha o valor do Álcool")
-                }
-            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                errorBorderColor = MaterialTheme.colorScheme.error,
+                cursorColor = MaterialTheme.colorScheme.primary
+            )
         )
         OutlinedTextField(
             value = textoGasolina,
@@ -129,24 +142,24 @@ fun TelaUnica(
                     textoGasolina = novoTexto
                 } },
             label = { Text("Preço da Gasolina (R$0.00)") },
-            isError = erroCampoGasolinaVazio,
-            supportingText = {
-                if (erroCampoGasolinaVazio) {
-                    Text("Preencha o valor da Gasolina")
-                }
-            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         )
         OutlinedTextField(
             value = textoPosto,
             onValueChange = { novoTexto -> textoPosto = novoTexto },
             label = { Text("Nome do Posto (Opcional)") },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
         Row (
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -180,47 +193,26 @@ fun TelaUnica(
             }
         }
 
-        Button(
-            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 16.dp, vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            ),
-            onClick = {
-                val valorAlcool = textoAlcool.toDoubleOrNull()
-                val valorGasolina = textoGasolina.toDoubleOrNull()
-                tentouEnviar = true
-
-                if (valorGasolina != null && valorAlcool != null) {
-                    rende = if (ligado) {
-                        valorGasolina * 0.75 >= valorAlcool
-                    } else {
-                        valorGasolina * 0.7 >= valorAlcool
-                    }
-                    calculado = true
-                }
-            }
-        ) {
-            Text(stringResource(R.string.calcular))
-        }
-
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             text = "Vamos Calcular?"
         )
 
         Box (
-            modifier = Modifier.fillMaxWidth().height(120.dp).padding(horizontal = 40.dp),
-            contentAlignment = Alignment.BottomCenter
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(horizontal = 40.dp),
+            contentAlignment = Alignment.Center
         ) {
-            if (calculado) {
+            if (textoAlcool.isNotBlank() && textoGasolina.isNotBlank()) {
                 if (rende) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(81.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(MaterialTheme.colorScheme.primary)
-                            .border(2.dp,MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp)),
+                            .background(MaterialTheme.colorScheme.secondary),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -234,8 +226,7 @@ fun TelaUnica(
                             .fillMaxWidth()
                             .height(81.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(colorResource(R.color.washed_orange))
-                            .border(2.dp, colorResource(R.color.orange), RoundedCornerShape(16.dp)),
+                            .background(MaterialTheme.colorScheme.secondary),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -244,6 +235,25 @@ fun TelaUnica(
                         )
                     }
                 }
+            }
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth()
+                .height(140.dp)
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            Button(
+                modifier = Modifier.width(90.dp).height(90.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                onClick = {
+
+                }
+            ) {
+
             }
         }
     }
