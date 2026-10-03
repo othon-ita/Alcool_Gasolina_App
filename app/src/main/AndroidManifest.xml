@@ -23,11 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".u_interface.PostosActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AlcoolOuGasolina">
-        </activity>
     </application>
 
 </manifest>

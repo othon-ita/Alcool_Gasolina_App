@@ -2,6 +2,7 @@ package com.example.alcoolougasolina.u_interface
 
 import com.example.alcoolougasolina.data.PostoRepository
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.StateFlow
 import com.example.alcoolougasolina.data.Posto
 import kotlinx.coroutines.flow.stateIn
@@ -53,5 +54,15 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
         posto: Posto
     ) = viewModelScope.launch {
         repository.deletar(posto)
+    }
+}
+
+class PostoViewModelFactory(private val repository: PostoRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(PostoViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return PostoViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
