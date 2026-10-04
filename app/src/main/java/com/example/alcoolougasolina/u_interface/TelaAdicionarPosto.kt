@@ -1,7 +1,15 @@
 package com.example.alcoolougasolina.u_interface
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,53 +20,40 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat
+import androidx.navigation.NavHostController
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import android.net.Uri
-import androidx.compose.runtime.remember
-import androidx.core.content.ContextCompat
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import android.Manifest
-import android.location.Location
-import com.google.android.gms.location.Priority
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationTokenSource
-import kotlinx.coroutines.tasks.await
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
-import androidx.compose.foundation.layout.Spacer
-import android.location.LocationManager
-import androidx.core.location.LocationManagerCompat
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
-import android.provider.Settings
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
-import android.location.Geocoder
-import androidx.compose.runtime.saveable.rememberSerializable
 import java.util.Locale
-import kotlinx.coroutines.withTimeout
 
 @Composable
 fun TelaAdicionarPosto(
@@ -76,7 +71,7 @@ fun TelaAdicionarPosto(
         color = MaterialTheme.colorScheme.background
     ) {
         val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        var dataFormatada: String = LocalDate.now().format(formato)
+        val dataFormatada: String = LocalDate.now().format(formato)
 
         val proibidos = setOf(',', '-', ' ')
         var erroAlcool by rememberSaveable { mutableStateOf(false) }
@@ -91,37 +86,43 @@ fun TelaAdicionarPosto(
                 ContextCompat.checkSelfPermission(
                     context,
                     Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             )
         }
 
         var latitude by rememberSaveable { mutableStateOf<Double?>(null) }
         var longitude by rememberSaveable { mutableStateOf<Double?>(null) }
-        var localizacao by rememberSaveable { mutableStateOf<Location?>(null) }
         var endereco by rememberSaveable { mutableStateOf<String?>(null) }
-        var textoEndereco by rememberSaveable { mutableStateOf<String>("") }
+        var textoEndereco by rememberSaveable { mutableStateOf("") }
+        var recarregarLocalizacao by remember { mutableIntStateOf(0) }
 
-        LaunchedEffect(Unit) {
-            try {
-                localizacao = getCurrentLocation(context)
-                if (localizacao != null) {
-                    latitude = localizacao!!.latitude
-                    longitude = localizacao!!.longitude
-                    endereco = obterEndereco(context, latitude!!, longitude!!)
+        LaunchedEffect(temPermissaoLocalizacao, recarregarLocalizacao) {
+            if (temPermissaoLocalizacao) {
+                try {
+                    val loc = getCurrentLocation(context)
+                    if (loc != null) {
+                        latitude = loc.latitude
+                        longitude = loc.longitude
+                        val end = obterEndereco(context, loc.latitude, loc.longitude)
+                        if (!end.isNullOrEmpty()) {
+                            endereco = end
+                            textoEndereco = end
+                        }
+                    }
+                } catch (_: Exception) {
                 }
-            } catch (e: Exception) {
-                // Tratar erro (ex: mostrar um Toast)
             }
-        }
-        if (!endereco.isNullOrEmpty()) {
-            textoEndereco = endereco!!
         }
 
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions()
         ) { permissoes ->
-            temPermissaoLocalizacao =
-                permissoes[Manifest.permission.ACCESS_FINE_LOCATION] == true
+            temPermissaoLocalizacao = permissoes[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                    permissoes[Manifest.permission.ACCESS_COARSE_LOCATION] == true
         }
 
         var mostrarDialogGps by remember { mutableStateOf(false) }
@@ -199,11 +200,12 @@ fun TelaAdicionarPosto(
 
                 if (mostrarDialogGps) {
                     DialogAtivarGps(
-                        onDismiss = { navController.navigate(
-                            "telaadicionarposto/$textoAlcool/$textoGasolina/$textoPosto"
-                        ) },
+                        onDismiss = {
+                            mostrarDialogGps = false
+                        },
                         onGpsAtivado = {
                             mostrarDialogGps = false
+                            recarregarLocalizacao++
                         }
                     )
                 }
@@ -217,39 +219,79 @@ fun TelaAdicionarPosto(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .height(28.dp),
-                        contentAlignment = Alignment.BottomStart
-                    ) {
-                        Text("Permissão de localização necessária:")
-                    }
-                    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                        Button(
-                            modifier = Modifier
-                                .width(180.dp)
-                                .height(40.dp)
-                                .align(Alignment.CenterStart),
-                            shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                            ),
-                            onClick = {
-                                launcher.launch(
-                                    arrayOf(
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    )
-                                )
-                            }) {
-                            Text("Solicitar Permissão")
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    onClick = {
+                        val valAlcool = novoTextoAlcool.toDoubleOrNull()
+                        val valGasolina = novoTextoGasolina.toDoubleOrNull()
+
+                        erroAlcool = (valAlcool == null)
+                        erroGasolina = (valGasolina == null)
+
+                        if (valAlcool != null && valGasolina != null) {
+                            viewModel.adicionar(
+                                valorAlcool = valAlcool,
+                                valorGasolina = valGasolina,
+                                nomePosto = novoTextoPosto,
+                                dataCadastro = dataFormatada,
+                                endereco = textoEndereco,
+                                latitude = latitude ?: 0.0,
+                                longitude = longitude ?: 0.0
+                            )
+                            navController.navigate("telapostos")
                         }
                     }
+                ) {
+                    Text(
+                        text = "Confirmar e adicionar"
+                    )
                 }
-
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .height(28.dp),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    Text("Permissão de localização necessária:")
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .width(180.dp)
+                            .height(40.dp)
+                            .align(Alignment.CenterStart),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        onClick = {
+                            launcher.launch(
+                                arrayOf(
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                                )
+                            )
+                        }
+                    ) {
+                        Text("Solicitar Permissão")
+                    }
+                }
+            }
         }
     }
 }
@@ -267,25 +309,28 @@ suspend fun getCurrentLocation(context: Context): Location? {
     ) == PackageManager.PERMISSION_GRANTED
 
     if (!hasFineLocation && !hasCoarseLocation) {
-        throw SecurityException("Permissão de localização não concedida")
+        return null
     }
 
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     val cancellationTokenSource = CancellationTokenSource()
 
     return try {
+        val priority = if (hasFineLocation) Priority.PRIORITY_HIGH_ACCURACY else Priority.PRIORITY_BALANCED_POWER_ACCURACY
         fusedLocationClient.getCurrentLocation(
-            Priority.PRIORITY_HIGH_ACCURACY,
+            priority,
             cancellationTokenSource.token
         ).await()
+    } catch (_: Exception) {
+        null
     } finally {
         cancellationTokenSource.cancel()
     }
 }
 
 fun isGpsAtivado(context: Context): Boolean {
-    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    return LocationManagerCompat.isLocationEnabled(locationManager)
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+    return locationManager?.let { LocationManagerCompat.isLocationEnabled(it) } ?: false
 }
 
 @Composable
@@ -310,7 +355,6 @@ fun DialogAtivarGps(
         text = { Text("Para continuar, você precisa ativar o GPS nas configurações do seu dispositivo.") },
         confirmButton = {
             TextButton(onClick = {
-                // Abre a tela de configurações de localização
                 launcherConfig.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }) {
                 Text("Abrir Configurações")
@@ -329,17 +373,17 @@ suspend fun obterEndereco(context: Context, latitude: Double, longitude: Double)
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
             @Suppress("DEPRECATION")
-            val enderecos = geocoder.getFromLocation(latitude, longitude, 5)
+            val enderecos = geocoder.getFromLocation(latitude, longitude, 1)
             enderecos?.firstOrNull()?.let { endereco ->
                 buildString {
                     endereco.thoroughfare?.let { append(it) }
-                    endereco.subThoroughfare?.let { append(", $it") }
-                    endereco.subLocality?.let { append(" - $it") }
-                    endereco.locality?.let { append(" - $it") }
-                    endereco.adminArea?.let { append(" - $it") }
-                }
+                    if (!endereco.subThoroughfare.isNullOrEmpty()) append(", ${endereco.subThoroughfare}")
+                    if (!endereco.subLocality.isNullOrEmpty()) append(" - ${endereco.subLocality}")
+                    if (!endereco.locality.isNullOrEmpty()) append(" - ${endereco.locality}")
+                    if (!endereco.adminArea.isNullOrEmpty()) append(" - ${endereco.adminArea}")
+                }.ifBlank { null }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }

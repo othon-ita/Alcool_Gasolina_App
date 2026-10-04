@@ -24,7 +24,8 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
         nomePosto: String,
         dataCadastro: String,
         endereco: String,
-        localizacao: String
+        latitude: Double = 0.0,
+        longitude: Double = 0.0
     ) = viewModelScope.launch {
         repository.inserir(Posto(
             valorAlcool = valorAlcool,
@@ -32,7 +33,8 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
             nomePosto = nomePosto,
             dataCadastro = dataCadastro,
             endereco = endereco,
-            localizacao = localizacao
+            latitude = latitude,
+            longitude = longitude
         ))
     }
 
@@ -42,7 +44,8 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
         nomePosto: String,
         dataCadastro: String,
         endereco: String,
-        localizacao: String
+        latitude: Double = 0.0,
+        longitude: Double = 0.0
     ) = viewModelScope.launch {
         repository.atualizar(Posto(
             valorAlcool = valorAlcool,
@@ -50,7 +53,8 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
             nomePosto = nomePosto,
             dataCadastro = dataCadastro,
             endereco = endereco,
-            localizacao = localizacao
+            latitude = latitude,
+            longitude = longitude
         ))
     }
 

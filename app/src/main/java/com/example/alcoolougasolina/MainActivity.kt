@@ -52,41 +52,12 @@ class MainActivity : ComponentActivity() {
                             TelaInicial(navController, viewModel = viewModel, context = context)
                         }
                         composable(
-                            "telapostos/{novoTextoAlcool}/{novoTextoGasolina}" +
-                                    "/{novoTextoPosto}/{dataFormatada}/{textoEndereco}" +
-                                    "/{localizacao}",
-                            arguments = listOf(
-                                navArgument("novoTextoAlcool") {type = NavType.StringType},
-                                navArgument("novoTextoGasolina") {type = NavType.StringType},
-                                navArgument("novoTextoPosto") {type = NavType.StringType},
-                                navArgument("dataFormatada") {type = NavType.StringType},
-                                navArgument("textoEndereco") {type = NavType.StringType},
-                                navArgument("localizacao") {type = NavType.StringType}
-                            )
-                        ) { backStackEntry ->
-                            val novoTextoAlcool = backStackEntry
-                                .arguments?.getString("novoTextoAlcool") ?: ""
-                            val novoTextoGasolina = backStackEntry
-                                .arguments?.getString("novoTextoGasolina") ?: ""
-                            val novoTextoPosto = backStackEntry
-                                .arguments?.getString("novoTextoPosto") ?: ""
-                            val dataFormatada = backStackEntry
-                                .arguments?.getString("dataFormatada") ?: ""
-                            val textoEndereco = backStackEntry
-                                .arguments?.getString("textoEndereco") ?: ""
-                            val localizacao = backStackEntry
-                                .arguments?.getString("localizacao") ?: ""
-
+                            "telapostos"
+                        ) {
                             TelaPostos(
                                 navController,
                                 viewModel = viewModel,
-                                context = context,
-                                novoTextoAlcool = novoTextoAlcool,
-                                novoTextoGasolina = novoTextoGasolina,
-                                novoTextoPosto = novoTextoPosto,
-                                dataFormatada = dataFormatada,
-                                textoEndereco = textoEndereco,
-                                localizacao = localizacao
+                                context = context
                             )
 
                         }

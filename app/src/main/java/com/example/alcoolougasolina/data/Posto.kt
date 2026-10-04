@@ -11,5 +11,6 @@ data class Posto(
     val nomePosto: String,
     val dataCadastro: String,
     val endereco: String,
-    val localizacao: String
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 )

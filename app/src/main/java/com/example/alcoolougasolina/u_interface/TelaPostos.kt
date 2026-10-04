@@ -23,13 +23,7 @@ import com.example.alcoolougasolina.data.PostoRepository
 fun TelaPostos(
     navController: NavHostController,
     viewModel: PostoViewModel,
-    context: Context,
-    novoTextoAlcool: String,
-    novoTextoGasolina: String,
-    novoTextoPosto: String,
-    dataFormatada: String,
-    textoEndereco: String,
-    localizacao: String
+    context: Context
 ) {
     Surface(
         modifier = Modifier
@@ -39,22 +33,23 @@ fun TelaPostos(
     ) {
         val postos by viewModel.postos.collectAsStateWithLifecycle()
 
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            items(postos, key = { it.id }) { posto ->
-                Text(text = posto.valorAlcool.toString())
-                Text(text = posto.valorGasolina.toString())
-                Text(text = posto.nomePosto)
-                Text(text = posto.dataCadastro)
-                Text(text = posto.localizacao)
-            }
-        }
         if (postos.isEmpty()) {
             Text(
                 modifier = Modifier,
                 text = "Adicione algum posto!"
             )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+            ) {
+                items(postos, key = { it.id }) { posto ->
+                    Text(text = posto.valorAlcool.toString())
+                    Text(text = posto.valorGasolina.toString())
+                    Text(text = posto.nomePosto)
+                    Text(text = posto.dataCadastro)
+                    Text(text = posto.endereco)
+                }
+            }
         }
     }
 }
