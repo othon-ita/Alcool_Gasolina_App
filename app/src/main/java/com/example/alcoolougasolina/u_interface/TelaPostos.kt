@@ -1,5 +1,6 @@
 package com.example.alcoolougasolina.u_interface
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,22 +22,19 @@ import com.example.alcoolougasolina.data.PostoRepository
 @Composable
 fun TelaPostos(
     navController: NavHostController,
-    viewModel: PostoViewModel = viewModel(
-        factory = PostoViewModelFactory(
-            PostoRepository(
-                AppDatabase.getDatabase(LocalContext.current).postoDao()
-            )
-        )
-    )
+    viewModel: PostoViewModel,
+    context: Context
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center),
         color = MaterialTheme.colorScheme.background
     ) {
         val postos by viewModel.postos.collectAsStateWithLifecycle()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
         ) {
             items(postos, key = { it.id }) { posto ->
                 Text(text = posto.valorAlcool.toString())
@@ -45,6 +43,12 @@ fun TelaPostos(
                 Text(text = posto.dataCadastro)
                 Text(text = posto.localizacao)
             }
+        }
+        if (postos.isEmpty()) {
+            Text(
+                modifier = Modifier,
+                text = "Adicione algum posto!"
+            )
         }
     }
 }

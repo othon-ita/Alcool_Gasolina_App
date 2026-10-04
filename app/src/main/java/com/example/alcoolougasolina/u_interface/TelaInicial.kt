@@ -1,5 +1,6 @@
 package com.example.alcoolougasolina.u_interface
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,10 +35,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.alcoolougasolina.R
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 
 @Composable
 fun TelaInicial(
     navController: NavHostController,
+    viewModel: PostoViewModel,
+    context: Context,
     modifier: Modifier = Modifier
         .fillMaxSize()
         .wrapContentSize(Alignment.Center)
@@ -52,6 +57,8 @@ fun TelaInicial(
     }
     var rende by rememberSaveable { mutableStateOf(false) }
     val proibidos = setOf(',', '-', ' ')
+    var erroAlcool by rememberSaveable { mutableStateOf(false) }
+    var erroGasolina by rememberSaveable { mutableStateOf(false) }
 
     if (textoAlcool.isNotBlank() && textoGasolina.isNotBlank()) {
         val valorAlcool = textoAlcool.toDouble()
@@ -80,6 +87,10 @@ fun TelaInicial(
                     textoAlcool = novoTexto
                 } },
             label = { Text("Preço do Álcool (R$0.00)") },
+            isError = erroAlcool && textoAlcool.isBlank(),
+            supportingText = {
+                if (erroAlcool && textoAlcool.isBlank()) Text("Preencha o campo!")
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,6 +111,10 @@ fun TelaInicial(
                     textoGasolina = novoTexto
                 } },
             label = { Text("Preço da Gasolina (R$0.00)") },
+            isError = erroGasolina && textoGasolina.isBlank(),
+            supportingText = {
+                if (erroGasolina && textoGasolina.isBlank()) Text("Preencha o campo!")
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,14 +167,14 @@ fun TelaInicial(
         }
 
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
             text = "Vamos Calcular?"
         )
 
         Box (
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(90.dp)
                 .padding(horizontal = 40.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -193,6 +208,23 @@ fun TelaInicial(
                         )
                     }
                 }
+            } else {
+                Button(
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    shape = RoundedCornerShape(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    onClick = {
+                        navController.navigate("telapostos")
+                    }
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Administre seus postos"
+                    )
+                }
             }
         }
         Box(
@@ -208,7 +240,18 @@ fun TelaInicial(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 onClick = {
-                    navController.navigate("telapostos")
+                    if (textoAlcool.isNotBlank() && textoGasolina.isNotBlank()) {
+                        navController.navigate(
+                            "telaadicionarposto/$textoAlcool/$textoGasolina/$textoPosto"
+                        )
+                    } else {
+                        if (textoAlcool.isBlank()) {
+                        erroAlcool = true
+                        }
+                        if (textoGasolina.isBlank()) {
+                            erroGasolina = true
+                        }
+                    }
                 }
             ) {
 
