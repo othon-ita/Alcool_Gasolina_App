@@ -10,5 +10,6 @@ data class Posto(
     val valorGasolina: Double,
     val nomePosto: String,
     val dataCadastro: String,
+    val endereco: String,
     val localizacao: String
 )

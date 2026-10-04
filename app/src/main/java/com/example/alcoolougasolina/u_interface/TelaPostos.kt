@@ -23,7 +23,13 @@ import com.example.alcoolougasolina.data.PostoRepository
 fun TelaPostos(
     navController: NavHostController,
     viewModel: PostoViewModel,
-    context: Context
+    context: Context,
+    novoTextoAlcool: String,
+    novoTextoGasolina: String,
+    novoTextoPosto: String,
+    dataFormatada: String,
+    textoEndereco: String,
+    localizacao: String
 ) {
     Surface(
         modifier = Modifier

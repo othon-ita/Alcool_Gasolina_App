@@ -46,19 +46,48 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     )
-                    /*val locationString: String?
-
-                    if (intent?.action == Intent.ACTION_VIEW && intent.data?.scheme == "geo") {
-                        val geoUri: Uri? = intent.data
-                        val locationString = geoUri.toString()
-                    }*/
 
                     NavHost(navController = navController, startDestination = "telainicial") {
                         composable("telainicial") {
                             TelaInicial(navController, viewModel = viewModel, context = context)
                         }
-                        composable("telapostos") {
-                            TelaPostos(navController, viewModel = viewModel, context = context)
+                        composable(
+                            "telapostos/{novoTextoAlcool}/{novoTextoGasolina}" +
+                                    "/{novoTextoPosto}/{dataFormatada}/{textoEndereco}" +
+                                    "/{localizacao}",
+                            arguments = listOf(
+                                navArgument("novoTextoAlcool") {type = NavType.StringType},
+                                navArgument("novoTextoGasolina") {type = NavType.StringType},
+                                navArgument("novoTextoPosto") {type = NavType.StringType},
+                                navArgument("dataFormatada") {type = NavType.StringType},
+                                navArgument("textoEndereco") {type = NavType.StringType},
+                                navArgument("localizacao") {type = NavType.StringType}
+                            )
+                        ) { backStackEntry ->
+                            val novoTextoAlcool = backStackEntry
+                                .arguments?.getString("novoTextoAlcool") ?: ""
+                            val novoTextoGasolina = backStackEntry
+                                .arguments?.getString("novoTextoGasolina") ?: ""
+                            val novoTextoPosto = backStackEntry
+                                .arguments?.getString("novoTextoPosto") ?: ""
+                            val dataFormatada = backStackEntry
+                                .arguments?.getString("dataFormatada") ?: ""
+                            val textoEndereco = backStackEntry
+                                .arguments?.getString("textoEndereco") ?: ""
+                            val localizacao = backStackEntry
+                                .arguments?.getString("localizacao") ?: ""
+
+                            TelaPostos(
+                                navController,
+                                viewModel = viewModel,
+                                context = context,
+                                novoTextoAlcool = novoTextoAlcool,
+                                novoTextoGasolina = novoTextoGasolina,
+                                novoTextoPosto = novoTextoPosto,
+                                dataFormatada = dataFormatada,
+                                textoEndereco = textoEndereco,
+                                localizacao = localizacao
+                            )
 
                         }
                         composable (
@@ -80,7 +109,6 @@ class MainActivity : ComponentActivity() {
                                 navController,
                                 viewModel = viewModel,
                                 context = context,
-                            //    locationString = locationString,
                                 textoAlcool = textoAlcool,
                                 textoGasolina = textoGasolina,
                                 textoPosto = textoPosto

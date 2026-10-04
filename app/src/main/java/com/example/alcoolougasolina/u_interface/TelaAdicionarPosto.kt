@@ -76,7 +76,7 @@ fun TelaAdicionarPosto(
         color = MaterialTheme.colorScheme.background
     ) {
         val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val dataFormatada: String = LocalDate.now().format(formato)
+        var dataFormatada: String = LocalDate.now().format(formato)
 
         val proibidos = setOf(',', '-', ' ')
         var erroAlcool by rememberSaveable { mutableStateOf(false) }
@@ -86,7 +86,7 @@ fun TelaAdicionarPosto(
         var novoTextoGasolina by rememberSaveable { mutableStateOf(textoGasolina) }
         var novoTextoPosto by rememberSaveable { mutableStateOf(textoPosto) }
 
-        var temPermissaoLocalizacao by remember {
+        var temPermissaoLocalizacao by rememberSaveable {
             mutableStateOf(
                 ContextCompat.checkSelfPermission(
                     context,
@@ -180,6 +180,15 @@ fun TelaAdicionarPosto(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
             )
+            OutlinedTextField(
+                value = dataFormatada,
+                onValueChange = { },
+                label = { Text("Data") },
+                readOnly = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 14.dp)
+            )
 
             if (temPermissaoLocalizacao) {
                 if (!isGpsAtivado(context)) {
@@ -201,11 +210,12 @@ fun TelaAdicionarPosto(
 
                 OutlinedTextField(
                     value = textoEndereco,
-                    onValueChange = { novoTexto -> textoEndereco = novoTexto },
+                    onValueChange = { },
+                    readOnly = true,
                     label = { Text("Endereço") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
                 )
                 } else {
                     Box(
