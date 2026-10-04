@@ -46,6 +46,17 @@ import kotlinx.coroutines.tasks.await
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Spacer
+import android.location.LocationManager
+import androidx.core.location.LocationManagerCompat
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import android.provider.Settings
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import android.location.Geocoder
+import java.util.Locale
 
 @Composable
 fun TelaAdicionarPosto(
@@ -83,6 +94,9 @@ fun TelaAdicionarPosto(
         }
         val scope = rememberCoroutineScope()
         var localizacao by remember { mutableStateOf<Location?>(null) }
+        var latitude by rememberSaveable { mutableStateOf<Double?>(null) }
+        var longitude by rememberSaveable { mutableStateOf<Double?>(null) }
+        var endereco by rememberSaveable { mutableStateOf<String?>(null) }
 
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -90,6 +104,8 @@ fun TelaAdicionarPosto(
             temPermissaoLocalizacao =
                 permissoes[Manifest.permission.ACCESS_FINE_LOCATION] == true
         }
+
+        var mostrarDialogGps by remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier,
@@ -147,6 +163,22 @@ fun TelaAdicionarPosto(
             )
 
             if (temPermissaoLocalizacao) {
+                if (!isGpsAtivado(context)) {
+                    LaunchedEffect(Unit) {
+                        mostrarDialogGps = true
+                    }
+                }
+
+                if (mostrarDialogGps) {
+                    DialogAtivarGps(
+                        onDismiss = { navController.navigate(
+                            "telaadicionarposto/$textoAlcool/$textoGasolina/$textoPosto"
+                        ) },
+                        onGpsAtivado = {
+                            mostrarDialogGps = false
+                        }
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -169,6 +201,11 @@ fun TelaAdicionarPosto(
                             scope.launch {
                                 try {
                                     localizacao = getCurrentLocation(context)
+                                    if (localizacao != null) {
+                                        latitude = localizacao!!.latitude
+                                        longitude = localizacao!!.longitude
+                                        endereco = obterEndereco(context, latitude!!, longitude!!)
+                                    }
                                 } catch (e: Exception) {
                                     // Tratar erro (ex: mostrar um Toast)
                                 }
@@ -177,17 +214,12 @@ fun TelaAdicionarPosto(
                         Text("Pegar Localização Atual")
                     }
 
-                localizacao?.let { loc ->
+                endereco?.let {
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = "📍 Lat: %.5f".format(loc.latitude),
+                        text = "📍 $it",
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Text(
-                        text = "Lon: %.5f".format(loc.longitude),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
                 }
                 } else {
                     Box(
@@ -219,26 +251,6 @@ fun TelaAdicionarPosto(
                     }
                 }
             }
-                /*Button(
-                    modifier = Modifier.width(120.dp)
-                        .height(40.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("geo:0,0")
-                        )
-                        context.startActivity(intent)
-                    }
-                ) {
-                    Text(
-                        text = "Abrir Mapa"
-                    )
-                }*/
     }
 }
 
@@ -270,3 +282,64 @@ suspend fun getCurrentLocation(context: Context): Location? {
         cancellationTokenSource.cancel()
     }
 }
+
+fun isGpsAtivado(context: Context): Boolean {
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return LocationManagerCompat.isLocationEnabled(locationManager)
+}
+
+@Composable
+fun DialogAtivarGps(
+    onDismiss: () -> Unit,
+    onGpsAtivado: () -> Unit
+) {
+    val context = LocalContext.current
+    val launcherConfig = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (isGpsAtivado(context)) {
+            onGpsAtivado()
+        } else {
+            onDismiss()
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Ativar Localização") },
+        text = { Text("Para continuar, você precisa ativar o GPS nas configurações do seu dispositivo.") },
+        confirmButton = {
+            TextButton(onClick = {
+                // Abre a tela de configurações de localização
+                launcherConfig.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }) {
+                Text("Abrir Configurações")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
+suspend fun obterEndereco(context: Context, latitude: Double, longitude: Double): String? =
+    withContext(Dispatchers.IO) {
+        try {
+            val geocoder = Geocoder(context, Locale.getDefault())
+            @Suppress("DEPRECATION")
+            val enderecos = geocoder.getFromLocation(latitude, longitude, 5)
+            enderecos?.firstOrNull()?.let { endereco ->
+                buildString {
+                    endereco.thoroughfare?.let { append(it) }
+                    endereco.subThoroughfare?.let { append(", $it") }
+                    endereco.subLocality?.let { append(" - $it") }
+                    endereco.locality?.let { append(" - $it") }
+                    endereco.adminArea?.let { append(" - $it") }
+                }
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
