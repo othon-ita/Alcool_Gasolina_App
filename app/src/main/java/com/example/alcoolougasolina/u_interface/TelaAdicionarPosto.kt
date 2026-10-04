@@ -56,7 +56,9 @@ import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
 import android.location.Geocoder
+import androidx.compose.runtime.saveable.rememberSerializable
 import java.util.Locale
+import kotlinx.coroutines.withTimeout
 
 @Composable
 fun TelaAdicionarPosto(
@@ -92,11 +94,28 @@ fun TelaAdicionarPosto(
                 ) == PackageManager.PERMISSION_GRANTED
             )
         }
-        val scope = rememberCoroutineScope()
-        var localizacao by remember { mutableStateOf<Location?>(null) }
+
         var latitude by rememberSaveable { mutableStateOf<Double?>(null) }
         var longitude by rememberSaveable { mutableStateOf<Double?>(null) }
+        var localizacao by rememberSaveable { mutableStateOf<Location?>(null) }
         var endereco by rememberSaveable { mutableStateOf<String?>(null) }
+        var textoEndereco by rememberSaveable { mutableStateOf<String>("") }
+
+        LaunchedEffect(Unit) {
+            try {
+                localizacao = getCurrentLocation(context)
+                if (localizacao != null) {
+                    latitude = localizacao!!.latitude
+                    longitude = localizacao!!.longitude
+                    endereco = obterEndereco(context, latitude!!, longitude!!)
+                }
+            } catch (e: Exception) {
+                // Tratar erro (ex: mostrar um Toast)
+            }
+        }
+        if (!endereco.isNullOrEmpty()) {
+            textoEndereco = endereco!!
+        }
 
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -179,78 +198,49 @@ fun TelaAdicionarPosto(
                         }
                     )
                 }
-                Box(
+
+                OutlinedTextField(
+                    value = textoEndereco,
+                    onValueChange = { novoTexto -> textoEndereco = novoTexto },
+                    label = { Text("Endereço") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .height(56.dp),
-                    ) {
-                    Text("Permissão de localização concedida!")
-                    }
-
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        ),
-                        onClick = {
-                            scope.launch {
-                                try {
-                                    localizacao = getCurrentLocation(context)
-                                    if (localizacao != null) {
-                                        latitude = localizacao!!.latitude
-                                        longitude = localizacao!!.longitude
-                                        endereco = obterEndereco(context, latitude!!, longitude!!)
-                                    }
-                                } catch (e: Exception) {
-                                    // Tratar erro (ex: mostrar um Toast)
-                                }
-                            }
-                    }) {
-                        Text("Pegar Localização Atual")
-                    }
-
-                endereco?.let {
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = "📍 $it",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                )
                 } else {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
-                            .height(56.dp),
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .height(28.dp),
+                        contentAlignment = Alignment.BottomStart
                     ) {
-                        Text("Permissão de localização necessária.")
+                        Text("Permissão de localização necessária:")
                     }
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.onSurface
-                        ),
-                        onClick = {
-                            launcher.launch(
-                                arrayOf(
-                                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                        Button(
+                            modifier = Modifier
+                                .width(180.dp)
+                                .height(40.dp)
+                                .align(Alignment.CenterStart),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary,
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            ),
+                            onClick = {
+                                launcher.launch(
+                                    arrayOf(
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    )
                                 )
-                            )
-                        }) {
-                        Text("Solicitar Permissão")
+                            }) {
+                            Text("Solicitar Permissão")
+                        }
                     }
                 }
-            }
+
+        }
     }
 }
 
