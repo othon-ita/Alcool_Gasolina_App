@@ -26,6 +26,7 @@ import com.example.alcoolougasolina.u_interface.TelaAdicionarPosto
 import androidx.navigation.NavType
 import android.content.Intent
 import android.net.Uri
+import com.example.alcoolougasolina.data.DetalhesPosto
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +60,21 @@ class MainActivity : ComponentActivity() {
                                 viewModel = viewModel,
                                 context = context
                             )
-
+                        }
+                        composable(
+                            "detalhesposto/{id}",
+                            arguments = listOf(
+                                navArgument("id") {type = NavType.IntType}
+                            )
+                        ) { backStackEntry ->
+                            val id = backStackEntry
+                                .arguments?.getInt("id") ?: 0
+                            DetalhesPosto(
+                                navController,
+                                viewModel = viewModel,
+                                context = context,
+                                id = id
+                            )
                         }
                         composable (
                             "telaadicionarposto/{textoAlcool}/{textoGasolina}/{textoPosto}",

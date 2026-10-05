@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 class PostoRepository(private val dao: PostoDao) {
     val todosPostos: Flow<List<Posto>> = dao.listarTodos()
+    suspend fun buscaPorId(id: Int): Posto? = dao.buscaPorId(id)
     suspend fun inserir(posto: Posto) = dao.inserir(posto)
     suspend fun atualizar(posto: Posto) = dao.atualizar(posto)
     suspend fun deletar(posto: Posto) = dao.deletar(posto)

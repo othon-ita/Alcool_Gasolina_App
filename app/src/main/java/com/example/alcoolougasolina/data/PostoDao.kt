@@ -17,6 +17,9 @@ interface PostoDao {
     @Query("SELECT * FROM postos ORDER BY id DESC")
     fun listarTodos(): Flow<List<Posto>>
 
+    @Query("SELECT * FROM postos WHERE id = :id")
+    suspend fun buscaPorId(id: Int): Posto?
+
     //UPDATE
     @Update
     suspend fun atualizar(posto: Posto)

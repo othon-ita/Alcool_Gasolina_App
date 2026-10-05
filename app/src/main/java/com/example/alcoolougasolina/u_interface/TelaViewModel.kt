@@ -18,6 +18,13 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
             emptyList()
         )
 
+    suspend fun buscaPorId(
+        id: Int
+    ): Posto? =
+        repository.buscaPorId(
+            id = id
+        )
+
     fun adicionar(
         valorAlcool: Double,
         valorGasolina: Double,

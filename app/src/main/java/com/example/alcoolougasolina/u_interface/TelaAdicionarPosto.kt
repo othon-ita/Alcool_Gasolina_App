@@ -236,6 +236,10 @@ fun TelaAdicionarPosto(
                         erroAlcool = (valAlcool == null)
                         erroGasolina = (valGasolina == null)
 
+                        if(novoTextoPosto.isNullOrEmpty()) {
+                            novoTextoPosto = "posto sem nome"
+                        }
+
                         if (valAlcool != null && valGasolina != null) {
                             viewModel.adicionar(
                                 valorAlcool = valAlcool,
@@ -380,7 +384,6 @@ suspend fun obterEndereco(context: Context, latitude: Double, longitude: Double)
                     if (!endereco.subThoroughfare.isNullOrEmpty()) append(", ${endereco.subThoroughfare}")
                     if (!endereco.subLocality.isNullOrEmpty()) append(" - ${endereco.subLocality}")
                     if (!endereco.locality.isNullOrEmpty()) append(" - ${endereco.locality}")
-                    if (!endereco.adminArea.isNullOrEmpty()) append(" - ${endereco.adminArea}")
                 }.ifBlank { null }
             }
         } catch (_: Exception) {
