@@ -1,6 +1,7 @@
-package com.example.alcoolougasolina.data
+package com.example.alcoolougasolina.u_interface
 
 import android.content.Context
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,6 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.setValue
+import android.content.Intent
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import com.example.alcoolougasolina.data.Posto
 
 @Composable
 fun DetalhesPosto (
@@ -46,11 +53,13 @@ fun DetalhesPosto (
 
         Column(
             modifier = Modifier.padding(horizontal = 21.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 posto?.nomePosto?.uppercase()?.let {
                     Text(
@@ -62,7 +71,10 @@ fun DetalhesPosto (
                 }
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
                     modifier = Modifier,
@@ -78,7 +90,10 @@ fun DetalhesPosto (
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
                     modifier = Modifier,
@@ -94,7 +109,10 @@ fun DetalhesPosto (
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
                     modifier = Modifier,
@@ -112,7 +130,9 @@ fun DetalhesPosto (
                 }
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
             ) {
                 Text(
                     modifier = Modifier,
@@ -120,6 +140,12 @@ fun DetalhesPosto (
                     color = MaterialTheme.colorScheme.tertiary,
                     fontWeight = FontWeight.SemiBold
                 )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
                 posto?.endereco?.let {
                     Text(
                         modifier = Modifier,
@@ -127,6 +153,38 @@ fun DetalhesPosto (
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Medium
                     )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    onClick = {
+                        if (posto != null) {
+                            val lat = posto!!.latitude
+                            val lng = posto!!.longitude
+                            val endereco = posto!!.endereco
+
+                            val uri = Uri.parse("geo:$lat,$lng?q=${Uri.encode(endereco)}")
+                            val intent = Intent(
+                                Intent.ACTION_VIEW, uri
+                            )
+                            context.startActivity(intent)
+                        }
+                    }
+                ) {
+                    Text(text = "Abrir no Mapa")
                 }
             }
         }

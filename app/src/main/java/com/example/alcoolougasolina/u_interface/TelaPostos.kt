@@ -30,7 +30,11 @@ import androidx.navigation.NavHostController
 import com.example.alcoolougasolina.data.AppDatabase
 import com.example.alcoolougasolina.data.PostoRepository
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.layout.systemBarsPadding
 
 @Composable
 fun TelaPostos(
@@ -41,6 +45,7 @@ fun TelaPostos(
     Surface(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .wrapContentSize(Alignment.Center),
         color = MaterialTheme.colorScheme.background
     ) {
@@ -114,6 +119,41 @@ fun TelaPostos(
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Medium
                                 )
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(4.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Button(
+                                    modifier = Modifier
+                                        .width(120.dp)
+                                        .height(56.dp),
+                                    shape = RoundedCornerShape(32.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.secondary,
+                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    onClick = {
+                                        navController.navigate("editarposto/${posto.id}")
+                                    }
+                                ) {
+                                    Text(text = "Editar")
+                                }
+                                Button(
+                                    modifier = Modifier
+                                        .width(120.dp)
+                                        .height(56.dp),
+                                    shape = RoundedCornerShape(32.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.secondary,
+                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                    ),
+                                    onClick = {
+                                        viewModel.deletar(posto)
+                                    }
+                                ) {
+                                    Text(text = "Excluir")
+                                }
                             }
                         }
                     }

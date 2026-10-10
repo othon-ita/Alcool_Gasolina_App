@@ -26,7 +26,8 @@ import com.example.alcoolougasolina.u_interface.TelaAdicionarPosto
 import androidx.navigation.NavType
 import android.content.Intent
 import android.net.Uri
-import com.example.alcoolougasolina.data.DetalhesPosto
+import com.example.alcoolougasolina.u_interface.DetalhesPosto
+import com.example.alcoolougasolina.u_interface.EditarPosto
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +71,21 @@ class MainActivity : ComponentActivity() {
                             val id = backStackEntry
                                 .arguments?.getInt("id") ?: 0
                             DetalhesPosto(
+                                navController,
+                                viewModel = viewModel,
+                                context = context,
+                                id = id
+                            )
+                        }
+                        composable (
+                            "editarposto/{id}",
+                            arguments = listOf(
+                                navArgument("id") {type = NavType.IntType}
+                            )
+                        ) { backStackEntry ->
+                            val id = backStackEntry
+                                .arguments?.getInt("id") ?: 0
+                            EditarPosto(
                                 navController,
                                 viewModel = viewModel,
                                 context = context,

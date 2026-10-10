@@ -58,5 +58,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation("androidx.compose.material:material-icons-core")
     // testImplementation(libs.androidx.room.testing)
 }
