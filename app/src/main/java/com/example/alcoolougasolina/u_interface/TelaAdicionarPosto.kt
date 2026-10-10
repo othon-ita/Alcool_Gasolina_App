@@ -12,9 +12,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -67,7 +69,8 @@ fun TelaAdicionarPosto(
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center),
+            .wrapContentSize(Alignment.Center)
+            .imePadding(),
         color = MaterialTheme.colorScheme.background
     ) {
         val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -220,43 +223,51 @@ fun TelaAdicionarPosto(
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 )
 
-                Button(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    onClick = {
-                        val valAlcool = novoTextoAlcool.toDoubleOrNull()
-                        val valGasolina = novoTextoGasolina.toDoubleOrNull()
-
-                        erroAlcool = (valAlcool == null)
-                        erroGasolina = (valGasolina == null)
-
-                        if(novoTextoPosto.isNullOrEmpty()) {
-                            novoTextoPosto = "posto sem nome"
-                        }
-
-                        if (valAlcool != null && valGasolina != null) {
-                            viewModel.adicionar(
-                                valorAlcool = valAlcool,
-                                valorGasolina = valGasolina,
-                                nomePosto = novoTextoPosto,
-                                dataCadastro = dataFormatada,
-                                endereco = textoEndereco,
-                                latitude = latitude ?: 0.0,
-                                longitude = longitude ?: 0.0
-                            )
-                            navController.navigate("telapostos")
-                        }
-                    }
+                        .height(80.dp)
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "Confirmar e adicionar"
-                    )
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp),
+                        shape = RoundedCornerShape(32.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        onClick = {
+                            val valAlcool = novoTextoAlcool.toDoubleOrNull()
+                            val valGasolina = novoTextoGasolina.toDoubleOrNull()
+
+                            erroAlcool = (valAlcool == null)
+                            erroGasolina = (valGasolina == null)
+
+                            if(novoTextoPosto.isNullOrEmpty()) {
+                                novoTextoPosto = "posto sem nome"
+                            }
+
+                            if (valAlcool != null && valGasolina != null) {
+                                viewModel.adicionar(
+                                    valorAlcool = valAlcool,
+                                    valorGasolina = valGasolina,
+                                    nomePosto = novoTextoPosto,
+                                    dataCadastro = dataFormatada,
+                                    endereco = textoEndereco,
+                                    latitude = latitude ?: 0.0,
+                                    longitude = longitude ?: 0.0
+                                )
+                                navController.navigate("telapostos")
+                            }
+                        }
+                    ) {
+                        Text(
+                            text = "Confirmar e adicionar"
+                        )
+                    }
                 }
             } else {
                 Box(

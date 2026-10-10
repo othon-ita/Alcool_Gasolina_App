@@ -37,6 +37,11 @@ import androidx.navigation.NavHostController
 import com.example.alcoolougasolina.R
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
+import androidx.compose.material3.Icon
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.size
 
 @Composable
 fun TelaInicial(
@@ -46,6 +51,7 @@ fun TelaInicial(
     modifier: Modifier = Modifier
         .fillMaxSize()
         .wrapContentSize(Alignment.Center)
+        .imePadding()
 ) {
     var textoAlcool by rememberSaveable { mutableStateOf("") }
     var textoGasolina by rememberSaveable { mutableStateOf("") }
@@ -166,11 +172,6 @@ fun TelaInicial(
             }
         }
 
-        Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-            text = "Vamos Calcular?"
-        )
-
         Box (
             modifier = Modifier
                 .fillMaxWidth()
@@ -254,7 +255,12 @@ fun TelaInicial(
                     }
                 }
             ) {
-
+                Icon(
+                    modifier = Modifier.size(32.dp),
+                    painter = painterResource(R.drawable.mais_preto),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.background
+                )
             }
         }
     }
