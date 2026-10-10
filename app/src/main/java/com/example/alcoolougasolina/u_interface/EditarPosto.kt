@@ -42,6 +42,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import java.time.ZoneOffset
 
 
@@ -75,6 +79,8 @@ fun EditarPosto(
             var textoPosto by rememberSaveable { mutableStateOf(posto!!.nomePosto) }
             var dataCadastro by rememberSaveable { mutableStateOf(posto!!.dataCadastro) }
             var endereco by rememberSaveable { mutableStateOf(posto!!.endereco) }
+            val latitude: Double = 0.0
+            val longitude: Double = 0.0
 
             val proibidos = setOf(',', '-', ' ')
             var erroAlcool by rememberSaveable { mutableStateOf(false) }
@@ -199,6 +205,45 @@ fun EditarPosto(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp)
                 )
+
+                Button(
+                    modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(32.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    onClick = {
+                        val valAlcool = textoAlcool.toDoubleOrNull()
+                        val valGasolina = textoGasolina.toDoubleOrNull()
+
+                        erroAlcool = (valAlcool == null)
+                        erroGasolina = (valGasolina == null)
+
+                        if(textoPosto.isNullOrEmpty()) {
+                            textoPosto = "posto sem nome"
+                        }
+
+                        if (valAlcool != null && valGasolina != null) {
+                            viewModel.atualizar(
+                                id = posto!!.id,
+                                valorAlcool = valAlcool,
+                                valorGasolina = valGasolina,
+                                nomePosto = textoPosto,
+                                dataCadastro = dataCadastro,
+                                endereco = endereco,
+                                latitude = latitude,
+                                longitude = longitude
+                            )
+                            navController.navigate("telapostos")
+                        }
+                    }
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Confirmar e Salvar"
+                    )
+                }
             }
         }
     }

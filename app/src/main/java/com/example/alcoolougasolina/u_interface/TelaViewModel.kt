@@ -46,6 +46,7 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
     }
 
     fun atualizar(
+        id: Int,
         valorAlcool: Double,
         valorGasolina: Double,
         nomePosto: String,
@@ -55,6 +56,7 @@ class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
         longitude: Double = 0.0
     ) = viewModelScope.launch {
         repository.atualizar(Posto(
+            id = id,
             valorAlcool = valorAlcool,
             valorGasolina = valorGasolina,
             nomePosto = nomePosto,
