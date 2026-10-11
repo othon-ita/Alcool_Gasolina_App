@@ -40,12 +40,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.res.painterResource
+import com.example.alcoolougasolina.R
 import java.time.ZoneOffset
 
 
@@ -92,6 +97,22 @@ fun EditarPosto(
                 modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.seta_esquerda),
+                        modifier = Modifier.size(32.dp)
+                            .clickable {
+                            navController.navigate("telapostos")
+                        },
+                        contentDescription = null
+                    )
+                }
                 OutlinedTextField(
                     value = textoAlcool,
                     onValueChange = { novoTexto ->
@@ -206,43 +227,48 @@ fun EditarPosto(
                         .padding(horizontal = 16.dp, vertical = 4.dp)
                 )
 
-                Button(
-                    modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 16.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    onClick = {
-                        val valAlcool = textoAlcool.toDoubleOrNull()
-                        val valGasolina = textoGasolina.toDoubleOrNull()
-
-                        erroAlcool = (valAlcool == null)
-                        erroGasolina = (valGasolina == null)
-
-                        if(textoPosto.isNullOrEmpty()) {
-                            textoPosto = "posto sem nome"
-                        }
-
-                        if (valAlcool != null && valGasolina != null) {
-                            viewModel.atualizar(
-                                id = posto!!.id,
-                                valorAlcool = valAlcool,
-                                valorGasolina = valGasolina,
-                                nomePosto = textoPosto,
-                                dataCadastro = dataCadastro,
-                                endereco = endereco,
-                                latitude = latitude,
-                                longitude = longitude
-                            )
-                            navController.navigate("telapostos")
-                        }
-                    }
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(100.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        modifier = Modifier,
-                        text = "Confirmar e Salvar"
-                    )
+                    Button(
+                        modifier = Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 32.dp),
+                        shape = RoundedCornerShape(32.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        onClick = {
+                            val valAlcool = textoAlcool.toDoubleOrNull()
+                            val valGasolina = textoGasolina.toDoubleOrNull()
+
+                            erroAlcool = (valAlcool == null)
+                            erroGasolina = (valGasolina == null)
+
+                            if(textoPosto.isNullOrEmpty()) {
+                                textoPosto = "posto sem nome"
+                            }
+
+                            if (valAlcool != null && valGasolina != null) {
+                                viewModel.atualizar(
+                                    id = posto!!.id,
+                                    valorAlcool = valAlcool,
+                                    valorGasolina = valGasolina,
+                                    nomePosto = textoPosto,
+                                    dataCadastro = dataCadastro,
+                                    endereco = endereco,
+                                    latitude = latitude,
+                                    longitude = longitude
+                                )
+                                navController.navigate("telapostos")
+                            }
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier,
+                            text = "Confirmar e Salvar"
+                        )
+                    }
                 }
             }
         }
