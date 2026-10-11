@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ethanol or Gasoline</string>
+
+    <string name="calcular">Calcule</string>
+    <string name="rendimento_75">75%</string>
+    <string name="rendimento_70">70%</string>
+</resources>
