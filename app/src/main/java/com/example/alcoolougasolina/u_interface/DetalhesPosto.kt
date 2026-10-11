@@ -2,7 +2,6 @@ package com.example.alcoolougasolina.u_interface
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,18 +17,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.example.alcoolougasolina.u_interface.PostoViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.setValue
 import android.content.Intent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import com.example.alcoolougasolina.R
 import com.example.alcoolougasolina.data.Posto
 
 @Composable
@@ -51,140 +56,181 @@ fun DetalhesPosto (
             posto = viewModel.buscaPorId(id)
         }
 
-        Column(
-            modifier = Modifier.padding(horizontal = 21.dp, vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.secondary),
+            contentAlignment = Alignment.Center
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceAround
+            Column(
+                modifier = Modifier.padding(horizontal = 21.dp, vertical = 8.dp)
             ) {
-                posto?.nomePosto?.uppercase()?.let {
-                    Text(
-                        modifier = Modifier.align(Alignment.Top),
-                        text = it,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Preço do Álcool:",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    modifier = Modifier,
-                    text = "R$ " + posto?.valorAlcool,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Preço da Gasolina:",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    modifier = Modifier,
-                    text = "R$ " + posto?.valorGasolina,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Data do Cadastro:",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold
-                )
-                posto?.dataCadastro?.let {
-                    Text(
-                        modifier = Modifier,
-                        text = it,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                Text(
-                    modifier = Modifier,
-                    text = "Endereço:",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                posto?.endereco?.let {
-                    Text(
-                        modifier = Modifier,
-                        text = it,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Button(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(32.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
-                    ),
-                    onClick = {
-                        if (posto != null) {
-                            val lat = posto!!.latitude
-                            val lng = posto!!.longitude
-                            val endereco = posto!!.endereco
-
-                            val uri = Uri.parse("geo:$lat,$lng?q=${Uri.encode(endereco)}")
-                            val intent = Intent(
-                                Intent.ACTION_VIEW, uri
+                        .padding(vertical = 16.dp),
+                ) {
+                    posto?.nomePosto?.uppercase()?.let {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp)
+                                    .clickable {
+                                        navController.navigate("telapostos")
+                                    },
+                                contentAlignment = Alignment.CenterStart
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.seta_esquerda),
+                                    modifier = Modifier.size(32.dp),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.background
+                                )
+                            }
+                            Text(
+                                text = it,
+                                color = MaterialTheme.colorScheme.background,
+                                fontWeight = FontWeight.Bold
                             )
-                            context.startActivity(intent)
                         }
                     }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
                 ) {
-                    Text(text = "Abrir no Mapa")
+                    Text(
+                        modifier = Modifier,
+                        text = "Preço do Álcool:",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "R$ " + posto?.valorAlcool,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Preço da Gasolina:",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "R$ " + posto?.valorGasolina,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Data do Cadastro:",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    posto?.dataCadastro?.let {
+                        Text(
+                            modifier = Modifier,
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "Endereço:",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    posto?.endereco?.let {
+                        Text(
+                            modifier = Modifier,
+                            text = it,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 8.dp)
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(32.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        onClick = {
+                            if (posto != null) {
+                                val lat = posto!!.latitude
+                                val lng = posto!!.longitude
+                                val endereco = posto!!.endereco
+
+                                val uri = Uri.parse("geo:$lat,$lng?q=${Uri.encode(endereco)}")
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW, uri
+                                )
+                                context.startActivity(intent)
+                            }
+                        }
+                    ) {
+                        Text(text = "Abrir no Mapa")
+                    }
                 }
             }
         }
