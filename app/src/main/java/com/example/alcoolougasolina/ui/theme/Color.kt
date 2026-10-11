@@ -2,9 +2,16 @@ package com.example.alcoolougasolina.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val SpringGreen = Color(0xFF1EC95D)
-val OliveGreen = Color(0xFF446C00)
+val SeaGreen = Color(0xFF2E8B57)
+val DarkOliveGreen = Color(0xFF446C00)
+val OliveDrab = Color(0xFF6B8E23)
+val EerieBlack = Color(0xFF1C1C1C)
+val WhiteGreen = Color(0xFFD9EAD3)
+
+val Red = Color(0xFFC91222)
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
-val Red = Color(0xFFC91222)
-val DarkGreen = Color(0xFF223600)
+
+val Green500 = Color(0xFF4CAF50)
+val Khaki = Color(0xFFF0E68C)
+val MintGreen = Color(0xFFA8D5BA)

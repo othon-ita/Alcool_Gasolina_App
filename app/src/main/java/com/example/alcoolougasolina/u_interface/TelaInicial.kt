@@ -194,7 +194,7 @@ fun TelaInicial(
                     ) {
                         Text(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                            text = "Álcool rende mais!"
+                            text = stringResource(R.string.alcool_rende)
                         )
                     }
                 } else {
@@ -208,7 +208,7 @@ fun TelaInicial(
                     ) {
                         Text(
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                            text = "Gasolina rende mais!"
+                            text = stringResource(R.string.gasolina_rende)
                         )
                     }
                 }

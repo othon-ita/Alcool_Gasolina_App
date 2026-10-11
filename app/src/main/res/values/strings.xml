@@ -6,6 +6,8 @@
     <string name="nome_posto">Nome do Posto (Opcional)</string>
     <string name="data">Data</string>
     <string name="endereco">Endereço</string>
+    <string name="alcool_rende">Álcool rende mais!</string>
+    <string name="gasolina_rende">Gasolina rende mais!</string>
 
     <string name="taxa_rentabilidade">Taxa de Rentabilidade</string>
     <string name="admin_seus_postos">Administre seus Postos</string>
