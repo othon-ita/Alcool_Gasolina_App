@@ -46,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -162,7 +163,7 @@ fun TelaAdicionarPosto(
                         novoTextoAlcool = novoTexto
                     }
                 },
-                label = { Text("Preço do Álcool (R$0.00)") },
+                label = { Text(stringResource(R.string.valor_Alcool)) },
                 isError = erroAlcool && novoTextoAlcool.isBlank(),
                 supportingText = {
                     if (erroAlcool && novoTextoAlcool.isBlank()) Text("Preencha o campo!")
@@ -187,7 +188,7 @@ fun TelaAdicionarPosto(
                         novoTextoGasolina = novoTexto
                     }
                 },
-                label = { Text("Preço da Gasolina (R$0.00)") },
+                label = { Text(stringResource(R.string.valor_Gasolina)) },
                 isError = erroGasolina && novoTextoGasolina.isBlank(),
                 supportingText = {
                     if (erroGasolina && novoTextoGasolina.isBlank()) Text("Preencha o campo!")
@@ -200,7 +201,7 @@ fun TelaAdicionarPosto(
             OutlinedTextField(
                 value = novoTextoPosto,
                 onValueChange = { novoTexto -> novoTextoPosto = novoTexto },
-                label = { Text("Nome do Posto (Opcional)") },
+                label = { Text(stringResource(R.string.nome_posto)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
@@ -208,7 +209,7 @@ fun TelaAdicionarPosto(
             OutlinedTextField(
                 value = dataFormatada,
                 onValueChange = { },
-                label = { Text("Data") },
+                label = { Text(stringResource(R.string.data)) },
                 readOnly = true,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,7 +239,7 @@ fun TelaAdicionarPosto(
                     value = textoEndereco,
                     onValueChange = { },
                     readOnly = true,
-                    label = { Text("Endereço") },
+                    label = { Text(stringResource(R.string.endereco)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -287,7 +288,7 @@ fun TelaAdicionarPosto(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "Confirmar e Adicionar"
+                            text = stringResource(R.string.confirm_adic)
                         )
                     }
                 }
@@ -301,7 +302,7 @@ fun TelaAdicionarPosto(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Permissão de localização necessária:"
+                        text = stringResource(R.string.perm_loc_necess)
                     )
                 }
                 Box(
@@ -328,7 +329,7 @@ fun TelaAdicionarPosto(
                             )
                         }
                     ) {
-                        Text("Solicitar Permissão")
+                        Text(stringResource(R.string.solic_perm))
                     }
                 }
             }
@@ -391,18 +392,18 @@ fun DialogAtivarGps(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Ativar Localização") },
-        text = { Text("Para continuar, você precisa ativar o GPS nas configurações do seu dispositivo.") },
+        title = { Text(stringResource(R.string.ativ_loc)) },
+        text = { Text(stringResource(R.string.ativ_loc_mensagem)) },
         confirmButton = {
             TextButton(onClick = {
                 launcherConfig.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }) {
-                Text("Abrir Configurações")
+                Text(stringResource(R.string.abrir_config))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancelar")
+                Text(stringResource(R.string.cancelar))
             }
         }
     )

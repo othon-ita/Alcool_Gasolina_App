@@ -1,7 +1,33 @@
 <resources>
     <string name="app_name">Ethanol or Gasoline</string>
 
-    <string name="calcular">Calcule</string>
+    <string name="valor_Alcool">Ethanol Price ($0.00)</string>
+    <string name="valor_Gasolina">Gasoline Price ($0.00)</string>
+    <string name="nome_posto">Gas Station Name (Optional)</string>
+    <string name="data">Date</string>
+    <string name="endereco">Address</string>
+
+    <string name="taxa_rentabilidade">Rate of Return</string>
+    <string name="admin_seus_postos">Manage your Stations</string>
     <string name="rendimento_75">75%</string>
     <string name="rendimento_70">70%</string>
+
+    <string name="confirm_adic">Confirm and Add</string>
+    <string name="perm_loc_necess">Location permission required:</string>
+    <string name="solic_perm">Request Permition</string>
+    <string name="ativ_loc">Turn on Location</string>
+    <string name="ativ_loc_mensagem">
+        To continue, you need to enable GPS in your device\'s settings.
+    </string>
+    <string name="abrir_config">Open Settings</string>
+    <string name="cancelar">Cancel</string>
+
+    <string name="postos">STATIONS</string>
+    <string name="preco_Alcool">Ethanol Price:</string>
+    <string name="preco_Gasolina">Gasoline Price:</string>
+    <string name="editar">Edit</string>
+    <string name="excluir">Delete</string>
+    <string name="data_cadastro">Registration Date:</string>
+    <string name="endereco_detalhes">Address:</string>
+    <string name="abrir_mapa">Open Map:</string>
 </resources>

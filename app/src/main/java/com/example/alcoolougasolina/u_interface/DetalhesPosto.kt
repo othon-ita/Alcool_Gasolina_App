@@ -34,6 +34,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.alcoolougasolina.R
 import com.example.alcoolougasolina.data.Posto
 
@@ -108,7 +109,7 @@ fun DetalhesPosto (
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Preço do Álcool:",
+                        text = stringResource(R.string.preco_Alcool),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -132,7 +133,7 @@ fun DetalhesPosto (
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Preço da Gasolina:",
+                        text = stringResource(R.string.preco_Gasolina),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -156,7 +157,7 @@ fun DetalhesPosto (
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Data do Cadastro:",
+                        text = stringResource(R.string.data_cadastro),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -182,7 +183,7 @@ fun DetalhesPosto (
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Endereço:",
+                        text = stringResource(R.string.endereco_detalhes),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -229,7 +230,7 @@ fun DetalhesPosto (
                             }
                         }
                     ) {
-                        Text(text = "Abrir no Mapa")
+                        Text(text = stringResource(R.string.abrir_mapa))
                     }
                 }
             }

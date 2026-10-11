@@ -42,6 +42,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun TelaPostos(
@@ -78,7 +79,7 @@ fun TelaPostos(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "POSTOS",
+                            text = stringResource(R.string.postos),
                             color = MaterialTheme.colorScheme.background,
                             fontWeight = FontWeight.ExtraBold)
                         Box(
@@ -135,7 +136,7 @@ fun TelaPostos(
                             ) {
                                 Text(
                                     modifier = Modifier,
-                                    text = "Preço do Álcool:",
+                                    text = stringResource(R.string.preco_Alcool),
                                     color = MaterialTheme.colorScheme.tertiary,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -152,7 +153,7 @@ fun TelaPostos(
                             ) {
                                 Text(
                                     modifier = Modifier,
-                                    text = "Preço da Gasolina:",
+                                    text = stringResource(R.string.preco_Gasolina),
                                     color = MaterialTheme.colorScheme.tertiary,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -180,7 +181,7 @@ fun TelaPostos(
                                         navController.navigate("editarposto/${posto.id}")
                                     }
                                 ) {
-                                    Text(text = "Editar")
+                                    Text(text = stringResource(R.string.editar))
                                 }
                                 Button(
                                     modifier = Modifier
@@ -195,7 +196,7 @@ fun TelaPostos(
                                         viewModel.deletar(posto)
                                     }
                                 ) {
-                                    Text(text = "Excluir")
+                                    Text(text = stringResource(R.string.excluir))
                                 }
                             }
                         }

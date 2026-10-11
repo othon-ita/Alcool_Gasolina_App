@@ -92,7 +92,7 @@ fun TelaInicial(
                 if (novoTexto.none {caractere -> caractere in proibidos }) {
                     textoAlcool = novoTexto
                 } },
-            label = { Text("Preço do Álcool (R$0.00)") },
+            label = { Text(stringResource(R.string.valor_Alcool)) },
             isError = erroAlcool && textoAlcool.isBlank(),
             supportingText = {
                 if (erroAlcool && textoAlcool.isBlank()) Text("Preencha o campo!")
@@ -116,7 +116,7 @@ fun TelaInicial(
                 if (novoTexto.none {caractere -> caractere in proibidos }) {
                     textoGasolina = novoTexto
                 } },
-            label = { Text("Preço da Gasolina (R$0.00)") },
+            label = { Text(stringResource(R.string.valor_Gasolina)) },
             isError = erroGasolina && textoGasolina.isBlank(),
             supportingText = {
                 if (erroGasolina && textoGasolina.isBlank()) Text("Preencha o campo!")
@@ -143,7 +143,7 @@ fun TelaInicial(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Taxa de Rendibilidade"
+                text = stringResource(R.string.taxa_rentabilidade)
             )
             Row (
                 verticalAlignment = Alignment.CenterVertically
@@ -228,7 +228,7 @@ fun TelaInicial(
                 ) {
                     Text(
                         modifier = Modifier,
-                        text = "Administre seus postos"
+                        text = stringResource(R.string.admin_seus_postos)
                     )
                 }
             }

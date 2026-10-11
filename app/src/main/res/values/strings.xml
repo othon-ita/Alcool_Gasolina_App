@@ -1,6 +1,33 @@
 <resources>
-    <string name="app_name">Alcool ou Gasolina</string>
-    <string name="calcular">Calcular</string>
+    <string name="app_name">Álcool ou Gasolina</string>
+
+    <string name="valor_Alcool">Preço do Álcool (R$0.00)</string>
+    <string name="valor_Gasolina">Preço da Gasolina (R$0.00)</string>
+    <string name="nome_posto">Nome do Posto (Opcional)</string>
+    <string name="data">Data</string>
+    <string name="endereco">Endereço</string>
+
+    <string name="taxa_rentabilidade">Taxa de Rentabilidade</string>
+    <string name="admin_seus_postos">Administre seus Postos</string>
     <string name="rendimento_75">75%</string>
     <string name="rendimento_70">70%</string>
+
+    <string name="confirm_adic">Confirmar e Adicionar</string>
+    <string name="perm_loc_necess">Permissão de localização necessária:</string>
+    <string name="solic_perm">Solicitar Permissão</string>
+    <string name="ativ_loc">Ativar Localização</string>
+    <string name="ativ_loc_mensagem">
+        Para continuar, você precisa ativar o GPS nas configurações do seu dispositivo.
+    </string>
+    <string name="abrir_config">Abrir Configurações</string>
+    <string name="cancelar">Cancelar</string>
+
+    <string name="postos">POSTOS</string>
+    <string name="preco_Alcool">Preço do Álcool:</string>
+    <string name="preco_Gasolina">Preço da Gasolina:</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+    <string name="data_cadastro">Data de Cadastro:</string>
+    <string name="endereco_detalhes">Endereço:</string>
+    <string name="abrir_mapa">Abrir Mapa:</string>
 </resources>
