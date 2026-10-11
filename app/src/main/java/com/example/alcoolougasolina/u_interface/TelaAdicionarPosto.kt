@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +27,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -42,11 +45,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
 import androidx.navigation.NavHostController
+import com.example.alcoolougasolina.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -134,6 +139,22 @@ fun TelaAdicionarPosto(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.TopStart
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.seta_esquerda),
+                    modifier = Modifier.size(32.dp)
+                        .clickable {
+                            navController.navigate("telainicial")
+                        },
+                    contentDescription = null
+                )
+            }
             OutlinedTextField(
                 value = novoTextoAlcool,
                 onValueChange = { novoTexto ->
@@ -226,14 +247,14 @@ fun TelaAdicionarPosto(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(16.dp),
+                        .height(100.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(64.dp),
+                            .height(48.dp)
+                            .padding(horizontal = 32.dp),
                         shape = RoundedCornerShape(32.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
@@ -265,7 +286,8 @@ fun TelaAdicionarPosto(
                         }
                     ) {
                         Text(
-                            text = "Confirmar e adicionar"
+                            modifier = Modifier,
+                            text = "Confirmar e Adicionar"
                         )
                     }
                 }
@@ -275,19 +297,22 @@ fun TelaAdicionarPosto(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                         .height(28.dp),
-                    contentAlignment = Alignment.BottomStart
+                    contentAlignment = Alignment.CenterStart
                 ) {
-                    Text("Permissão de localização necessária:")
+                    Text(
+                        modifier = Modifier,
+                        text = "Permissão de localização necessária:"
+                    )
                 }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
+                        .height(64.dp)
                 ) {
                     Button(
                         modifier = Modifier
-                            .width(180.dp)
-                            .height(40.dp)
+                            .width(210.dp)
+                            .padding(horizontal = 16.dp)
                             .align(Alignment.CenterStart),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
