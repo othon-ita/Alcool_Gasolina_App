@@ -16,6 +16,8 @@
     <string name="rendimento_70">70%</string>
 
     <string name="confirm_adic">Confirm and Add</string>
+    <string name="confirm_salvar">Confirm and Save</string>
+
     <string name="perm_loc_necess">Location permission required:</string>
     <string name="solic_perm">Request Permition</string>
     <string name="ativ_loc">Turn on Location</string>

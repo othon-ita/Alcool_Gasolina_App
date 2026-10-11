@@ -16,6 +16,8 @@
     <string name="rendimento_70">70%</string>
 
     <string name="confirm_adic">Confirmar e Adicionar</string>
+    <string name="confirm_salvar">Confirmar e Salvar</string>
+
     <string name="perm_loc_necess">Permissão de localização necessária:</string>
     <string name="solic_perm">Solicitar Permissão</string>
     <string name="ativ_loc">Ativar Localização</string>

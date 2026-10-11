@@ -121,7 +121,7 @@ fun EditarPosto(
                             textoAlcool = novoTexto
                         }
                     },
-                    label = { Text("Preço do Álcool (R$0.00)") },
+                    label = { Text(stringResource(R.string.valor_Alcool)) },
                     isError = erroAlcool && textoAlcool.isBlank(),
                     supportingText = {
                         if (erroAlcool && textoAlcool.isBlank()) Text(stringResource(R.string.alerta))
@@ -146,7 +146,7 @@ fun EditarPosto(
                             textoGasolina = novoTexto
                         }
                     },
-                    label = { Text("Preço da Gasolina (R$0.00)") },
+                    label = { Text(stringResource(R.string.valor_Gasolina)) },
                     isError = erroGasolina && textoGasolina.isBlank(),
                     supportingText = {
                         if (erroGasolina && textoGasolina.isBlank()) Text(stringResource(R.string.alerta))
@@ -167,7 +167,7 @@ fun EditarPosto(
                 OutlinedTextField(
                     value = textoPosto,
                     onValueChange = { novoTexto -> textoPosto = novoTexto },
-                    label = { Text("Nome do Posto (Opcional)") },
+                    label = { Text(stringResource(R.string.nome_posto)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp),
@@ -188,7 +188,7 @@ fun EditarPosto(
                     OutlinedTextField(
                         value = dataCadastro,
                         onValueChange = { },
-                        label = { Text("Data") },
+                        label = { Text(stringResource(R.string.data)) },
                         readOnly = true,
                         trailingIcon = {
                             Icon(
@@ -246,7 +246,7 @@ fun EditarPosto(
                 OutlinedTextField(
                     value = endereco,
                     onValueChange = { novoTexto -> endereco = novoTexto },
-                    label = { Text("Endereço") },
+                    label = { Text(stringResource(R.string.endereco)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp),
@@ -299,7 +299,7 @@ fun EditarPosto(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "Confirmar e Salvar"
+                            text = stringResource(R.string.confirm_salvar)
                         )
                     }
                 }
