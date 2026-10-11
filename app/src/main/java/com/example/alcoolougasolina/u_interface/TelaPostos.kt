@@ -84,15 +84,15 @@ fun TelaPostos(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                                .clickable {
-                                    navController.navigate("telainicial")
-                                },
+                                .padding(horizontal = 16.dp),
                             contentAlignment = Alignment.CenterStart
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.seta_esquerda),
-                                modifier = Modifier.size(32.dp),
+                                modifier = Modifier.size(32.dp)
+                                    .clickable {
+                                        navController.navigate("telainicial")
+                                    },
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.background
                             )
