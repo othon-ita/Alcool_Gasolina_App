@@ -236,7 +236,7 @@ fun TelaInicial(
                     shape = RoundedCornerShape(32.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onSurface
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     onClick = {
                         navController.navigate("telapostos")

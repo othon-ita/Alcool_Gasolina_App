@@ -141,7 +141,7 @@ fun TelaPostos(
                                 Text(
                                     modifier = Modifier,
                                     text = "R$ " + posto.valorAlcool.toString(),
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -158,7 +158,7 @@ fun TelaPostos(
                                 Text(
                                     modifier = Modifier,
                                     text = "R$ " + posto.valorGasolina.toString(),
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
@@ -174,7 +174,7 @@ fun TelaPostos(
                                     shape = RoundedCornerShape(32.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.primary,
-                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
                                     ),
                                     onClick = {
                                         navController.navigate("editarposto/${posto.id}")
@@ -189,7 +189,7 @@ fun TelaPostos(
                                     shape = RoundedCornerShape(32.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.error,
-                                        contentColor = MaterialTheme.colorScheme.onSurface
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
                                     ),
                                     onClick = {
                                         viewModel.deletar(posto)

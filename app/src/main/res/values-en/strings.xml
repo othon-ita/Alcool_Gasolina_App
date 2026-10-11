@@ -31,5 +31,5 @@
     <string name="excluir">Delete</string>
     <string name="data_cadastro">Registration Date:</string>
     <string name="endereco_detalhes">Address:</string>
-    <string name="abrir_mapa">Open Map:</string>
+    <string name="abrir_mapa">Open Map</string>
 </resources>

@@ -268,7 +268,7 @@ fun EditarPosto(
                         shape = RoundedCornerShape(32.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.secondary,
-                            contentColor = MaterialTheme.colorScheme.onSurface
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         onClick = {
                             val valAlcool = textoAlcool.toDoubleOrNull()
