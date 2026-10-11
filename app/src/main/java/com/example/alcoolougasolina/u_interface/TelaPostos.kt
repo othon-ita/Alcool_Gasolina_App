@@ -2,7 +2,6 @@ package com.example.alcoolougasolina.u_interface
 
 import com.example.alcoolougasolina.R
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +20,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +40,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -80,7 +79,7 @@ fun TelaPostos(
                     ) {
                         Text(
                             text = stringResource(R.string.postos),
-                            color = MaterialTheme.colorScheme.background,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.ExtraBold)
                         Box(
                             modifier = Modifier
@@ -94,8 +93,7 @@ fun TelaPostos(
                                     .clickable {
                                         navController.navigate("telainicial")
                                     },
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.background
+                                contentDescription = null
                             )
                         }
                     }
@@ -137,7 +135,7 @@ fun TelaPostos(
                                 Text(
                                     modifier = Modifier,
                                     text = stringResource(R.string.preco_Alcool),
-                                    color = MaterialTheme.colorScheme.tertiary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
@@ -154,7 +152,7 @@ fun TelaPostos(
                                 Text(
                                     modifier = Modifier,
                                     text = stringResource(R.string.preco_Gasolina),
-                                    color = MaterialTheme.colorScheme.tertiary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
@@ -165,16 +163,17 @@ fun TelaPostos(
                                 )
                             }
                             Row(
-                                modifier = Modifier.fillMaxWidth().padding(4.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier = Modifier.fillMaxWidth().height(64.dp).padding(4.dp),
+                                horizontalArrangement = Arrangement.SpaceAround,
+                                verticalAlignment = Alignment.Bottom
                             ) {
                                 Button(
                                     modifier = Modifier
-                                        .width(120.dp)
-                                        .height(56.dp),
+                                        .width(90.dp)
+                                        .height(42.dp),
                                     shape = RoundedCornerShape(32.dp),
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.secondary,
+                                        containerColor = MaterialTheme.colorScheme.primary,
                                         contentColor = MaterialTheme.colorScheme.onSurface
                                     ),
                                     onClick = {
@@ -185,11 +184,11 @@ fun TelaPostos(
                                 }
                                 Button(
                                     modifier = Modifier
-                                        .width(120.dp)
-                                        .height(56.dp),
+                                        .width(90.dp)
+                                        .height(42.dp),
                                     shape = RoundedCornerShape(32.dp),
                                     colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.secondary,
+                                        containerColor = MaterialTheme.colorScheme.error,
                                         contentColor = MaterialTheme.colorScheme.onSurface
                                     ),
                                     onClick = {

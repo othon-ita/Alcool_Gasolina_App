@@ -175,10 +175,10 @@ fun TelaAdicionarPosto(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    focusedBorderColor = MaterialTheme.colorScheme.secondary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                     errorBorderColor = MaterialTheme.colorScheme.error,
-                    cursorColor = MaterialTheme.colorScheme.primary
+                    cursorColor = MaterialTheme.colorScheme.secondary
                 )
             )
             OutlinedTextField(
@@ -196,7 +196,15 @@ fun TelaAdicionarPosto(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    errorBorderColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.secondary
+                )
             )
             OutlinedTextField(
                 value = novoTextoPosto,
@@ -204,7 +212,15 @@ fun TelaAdicionarPosto(
                 label = { Text(stringResource(R.string.nome_posto)) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    errorBorderColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.secondary
+                )
             )
             OutlinedTextField(
                 value = dataFormatada,
@@ -213,7 +229,15 @@ fun TelaAdicionarPosto(
                 readOnly = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 14.dp)
+                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    errorBorderColor = MaterialTheme.colorScheme.error,
+                    cursorColor = MaterialTheme.colorScheme.secondary
+                )
             )
 
             if (temPermissaoLocalizacao) {
@@ -242,7 +266,15 @@ fun TelaAdicionarPosto(
                     label = { Text(stringResource(R.string.endereco)) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        errorBorderColor = MaterialTheme.colorScheme.error,
+                        cursorColor = MaterialTheme.colorScheme.secondary
+                    )
                 )
 
                 Box(
@@ -258,7 +290,7 @@ fun TelaAdicionarPosto(
                             .padding(horizontal = 32.dp),
                         shape = RoundedCornerShape(32.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         ),
                         onClick = {
@@ -317,7 +349,7 @@ fun TelaAdicionarPosto(
                             .align(Alignment.CenterStart),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary,
+                            containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onSurface
                         ),
                         onClick = {
@@ -398,12 +430,12 @@ fun DialogAtivarGps(
             TextButton(onClick = {
                 launcherConfig.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }) {
-                Text(stringResource(R.string.abrir_config))
+                Text(color = MaterialTheme.colorScheme.secondary, text = stringResource(R.string.abrir_config))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancelar))
+                Text(color = MaterialTheme.colorScheme.secondary, text = stringResource(R.string.cancelar))
             }
         }
     )

@@ -8,7 +8,7 @@ val OliveDrab = Color(0xFF6B8E23)
 val EerieBlack = Color(0xFF1C1C1C)
 val WhiteGreen = Color(0xFFD9EAD3)
 
-val Red = Color(0xFFC91222)
+val Red = Color(0xFFCE2534)
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
 

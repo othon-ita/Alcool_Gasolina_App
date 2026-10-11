@@ -92,7 +92,7 @@ fun TelaInicial(
                 if (novoTexto.none {caractere -> caractere in proibidos }) {
                     textoAlcool = novoTexto
                 } },
-            label = { Text(stringResource(R.string.valor_Alcool)) },
+            label = { Text(text = stringResource(R.string.valor_Alcool)) },
             isError = erroAlcool && textoAlcool.isBlank(),
             supportingText = {
                 if (erroAlcool && textoAlcool.isBlank()) Text("Preencha o campo!")
@@ -104,10 +104,10 @@ fun TelaInicial(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurface,
                 unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.secondary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 errorBorderColor = MaterialTheme.colorScheme.error,
-                cursorColor = MaterialTheme.colorScheme.primary
+                cursorColor = MaterialTheme.colorScheme.secondary
             )
         )
         OutlinedTextField(
@@ -116,7 +116,7 @@ fun TelaInicial(
                 if (novoTexto.none {caractere -> caractere in proibidos }) {
                     textoGasolina = novoTexto
                 } },
-            label = { Text(stringResource(R.string.valor_Gasolina)) },
+            label = { Text(text = stringResource(R.string.valor_Gasolina)) },
             isError = erroGasolina && textoGasolina.isBlank(),
             supportingText = {
                 if (erroGasolina && textoGasolina.isBlank()) Text("Preencha o campo!")
@@ -124,15 +124,31 @@ fun TelaInicial(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                errorBorderColor = MaterialTheme.colorScheme.error,
+                cursorColor = MaterialTheme.colorScheme.secondary
+            )
         )
         OutlinedTextField(
             value = textoPosto,
             onValueChange = { novoTexto -> textoPosto = novoTexto },
-            label = { Text("Nome do Posto (Opcional)") },
+            label = { Text(text = stringResource(R.string.nome_posto)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                errorBorderColor = MaterialTheme.colorScheme.error,
+                cursorColor = MaterialTheme.colorScheme.secondary
+            )
         )
 
         Row (
@@ -162,8 +178,8 @@ fun TelaInicial(
                     },
                     modifier = Modifier.padding(horizontal = 4.dp),
                     colors = SwitchDefaults.colors(
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        checkedThumbColor = MaterialTheme.colorScheme.secondary
+                        checkedTrackColor = MaterialTheme.colorScheme.secondary,
+                        checkedThumbColor = MaterialTheme.colorScheme.primary
                     )
                 )
                 if (!ligado) {
@@ -219,7 +235,7 @@ fun TelaInicial(
                         .height(56.dp),
                     shape = RoundedCornerShape(32.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onSurface
                     ),
                     onClick = {
@@ -246,7 +262,7 @@ fun TelaInicial(
                     .height(90.dp),
                 shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.secondary
                 ),
                 onClick = {
                     if (textoAlcool.isNotBlank() && textoGasolina.isNotBlank()) {
