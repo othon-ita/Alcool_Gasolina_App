@@ -8,6 +8,7 @@
     <string name="endereco">Address</string>
     <string name="alcool_rende">Ethanol goes further!</string>
     <string name="gasolina_rende">Gasoline goes further!</string>
+    <string name="alerta">Fill In The Field!</string>
 
     <string name="taxa_rentabilidade">Rate of Return</string>
     <string name="admin_seus_postos">Manage your Stations</string>

@@ -166,7 +166,7 @@ fun TelaAdicionarPosto(
                 label = { Text(stringResource(R.string.valor_Alcool)) },
                 isError = erroAlcool && novoTextoAlcool.isBlank(),
                 supportingText = {
-                    if (erroAlcool && novoTextoAlcool.isBlank()) Text("Preencha o campo!")
+                    if (erroAlcool && novoTextoAlcool.isBlank()) Text(stringResource(R.string.alerta))
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
@@ -191,7 +191,7 @@ fun TelaAdicionarPosto(
                 label = { Text(stringResource(R.string.valor_Gasolina)) },
                 isError = erroGasolina && novoTextoGasolina.isBlank(),
                 supportingText = {
-                    if (erroGasolina && novoTextoGasolina.isBlank()) Text("Preencha o campo!")
+                    if (erroGasolina && novoTextoGasolina.isBlank()) Text(stringResource(R.string.alerta))
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier

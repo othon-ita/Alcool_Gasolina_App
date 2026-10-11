@@ -50,6 +50,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.alcoolougasolina.R
 import java.time.ZoneOffset
 
@@ -123,7 +124,7 @@ fun EditarPosto(
                     label = { Text("Preço do Álcool (R$0.00)") },
                     isError = erroAlcool && textoAlcool.isBlank(),
                     supportingText = {
-                        if (erroAlcool && textoAlcool.isBlank()) Text("Preencha o campo!")
+                        if (erroAlcool && textoAlcool.isBlank()) Text(stringResource(R.string.alerta))
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
@@ -148,7 +149,7 @@ fun EditarPosto(
                     label = { Text("Preço da Gasolina (R$0.00)") },
                     isError = erroGasolina && textoGasolina.isBlank(),
                     supportingText = {
-                        if (erroGasolina && textoGasolina.isBlank()) Text("Preencha o campo!")
+                        if (erroGasolina && textoGasolina.isBlank()) Text(stringResource(R.string.alerta))
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier

@@ -95,7 +95,7 @@ fun TelaInicial(
             label = { Text(text = stringResource(R.string.valor_Alcool)) },
             isError = erroAlcool && textoAlcool.isBlank(),
             supportingText = {
-                if (erroAlcool && textoAlcool.isBlank()) Text("Preencha o campo!")
+                if (erroAlcool && textoAlcool.isBlank()) Text(stringResource(R.string.alerta))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
@@ -119,7 +119,7 @@ fun TelaInicial(
             label = { Text(text = stringResource(R.string.valor_Gasolina)) },
             isError = erroGasolina && textoGasolina.isBlank(),
             supportingText = {
-                if (erroGasolina && textoGasolina.isBlank()) Text("Preencha o campo!")
+                if (erroGasolina && textoGasolina.isBlank()) Text(stringResource(R.string.alerta))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
