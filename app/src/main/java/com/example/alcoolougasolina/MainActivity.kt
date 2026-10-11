@@ -26,6 +26,9 @@ import com.example.alcoolougasolina.u_interface.TelaAdicionarPosto
 import androidx.navigation.NavType
 import android.content.Intent
 import android.net.Uri
+import com.example.alcoolougasolina.data.SwitchRepository
+import com.example.alcoolougasolina.u_interface.ConfigViewModel
+import com.example.alcoolougasolina.u_interface.ConfigViewModelFactory
 import com.example.alcoolougasolina.u_interface.DetalhesPosto
 import com.example.alcoolougasolina.u_interface.EditarPosto
 
@@ -48,10 +51,15 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     )
+                    val switchViewModel: ConfigViewModel = viewModel(
+                        factory = ConfigViewModelFactory(
+                            SwitchRepository(context)
+                        )
+                    )
 
                     NavHost(navController = navController, startDestination = "telainicial") {
                         composable("telainicial") {
-                            TelaInicial(navController, viewModel = viewModel, context = context)
+                            TelaInicial(navController, viewModel = switchViewModel, context = context)
                         }
                         composable(
                             "telapostos"

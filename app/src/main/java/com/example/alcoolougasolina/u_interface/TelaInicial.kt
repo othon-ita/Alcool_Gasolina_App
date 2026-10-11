@@ -46,7 +46,7 @@ import androidx.compose.foundation.layout.size
 @Composable
 fun TelaInicial(
     navController: NavHostController,
-    viewModel: PostoViewModel,
+    viewModel: ConfigViewModel,
     context: Context,
     modifier: Modifier = Modifier
         .fillMaxSize()
@@ -56,7 +56,7 @@ fun TelaInicial(
     var textoAlcool by rememberSaveable { mutableStateOf("") }
     var textoGasolina by rememberSaveable { mutableStateOf("") }
     var textoPosto by rememberSaveable { mutableStateOf("") }
-    var ligado:Boolean by rememberSaveable { mutableStateOf(true) }
+    var ligado:Boolean by rememberSaveable { mutableStateOf(viewModel.modo) }
     val porcentagem = when (ligado) {
         true -> stringResource(R.string.rendimento_75)
         else -> stringResource(R.string.rendimento_70)
@@ -156,7 +156,10 @@ fun TelaInicial(
                 }
                 Switch(
                     checked = ligado,
-                    onCheckedChange = { novoEstado -> ligado = novoEstado },
+                    onCheckedChange = { novo ->
+                        ligado = novo
+                        viewModel.atualizarSwitch()
+                    },
                     modifier = Modifier.padding(horizontal = 4.dp),
                     colors = SwitchDefaults.colors(
                         checkedTrackColor = MaterialTheme.colorScheme.primary,
@@ -211,7 +214,9 @@ fun TelaInicial(
                 }
             } else {
                 Button(
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
                     shape = RoundedCornerShape(32.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
@@ -229,13 +234,16 @@ fun TelaInicial(
             }
         }
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(140.dp)
                 .padding(horizontal = 20.dp),
             contentAlignment = Alignment.CenterEnd
         ) {
             Button(
-                modifier = Modifier.width(90.dp).height(90.dp),
+                modifier = Modifier
+                    .width(90.dp)
+                    .height(90.dp),
                 shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary

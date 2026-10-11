@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.stateIn
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
+import com.example.alcoolougasolina.data.SwitchRepository
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class PostoViewModel(private val repository: PostoRepository) : ViewModel() {
     val postos: StateFlow<List<Posto>> = repository.todosPostos
@@ -79,6 +83,29 @@ class PostoViewModelFactory(private val repository: PostoRepository) : ViewModel
         if (modelClass.isAssignableFrom(PostoViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return PostoViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class ConfigViewModel(
+    private val repo: SwitchRepository
+) : ViewModel() {
+
+    var modo by mutableStateOf(repo.obterSwitch())
+        private set
+
+    fun atualizarSwitch() {
+        modo = !modo
+        repo.salvarSwitch(modo)
+    }
+}
+
+class ConfigViewModelFactory(private val repository: SwitchRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ConfigViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ConfigViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
