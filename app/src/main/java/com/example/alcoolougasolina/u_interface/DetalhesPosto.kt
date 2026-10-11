@@ -87,7 +87,7 @@ fun DetalhesPosto (
                                     painter = painterResource(R.drawable.seta_esquerda),
                                     modifier = Modifier.size(32.dp)
                                         .clickable {
-                                            navController.navigate("telainicial")
+                                            navController.navigate("telapostos")
                                         },
                                     contentDescription = null,
                                     tint = MaterialTheme.colorScheme.background
