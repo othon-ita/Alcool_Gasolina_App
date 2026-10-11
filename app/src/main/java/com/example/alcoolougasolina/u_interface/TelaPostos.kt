@@ -1,6 +1,8 @@
 package com.example.alcoolougasolina.u_interface
 
+import com.example.alcoolougasolina.R
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +32,16 @@ import androidx.navigation.NavHostController
 import com.example.alcoolougasolina.data.AppDatabase
 import com.example.alcoolougasolina.data.PostoRepository
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Icon
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.ExperimentalFoundationApi
 
 @Composable
 fun TelaPostos(
@@ -45,21 +52,57 @@ fun TelaPostos(
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding()
-            .wrapContentSize(Alignment.Center),
+            .systemBarsPadding(),
         color = MaterialTheme.colorScheme.background
     ) {
         val postos by viewModel.postos.collectAsStateWithLifecycle()
 
         if (postos.isEmpty()) {
-            Text(
-                modifier = Modifier,
-                text = "Adicione algum posto!"
-            )
+            Box(
+                modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = "Adicione algum posto!"
+                )
+            }
         } else {
+            @OptIn(ExperimentalFoundationApi::class)
             LazyColumn(
                 modifier = Modifier
             ) {
+                stickyHeader {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(64.dp)
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "POSTOS",
+                            color = MaterialTheme.colorScheme.background,
+                            fontWeight = FontWeight.ExtraBold)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .clickable {
+                                    navController.navigate("telainicial")
+                                },
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.seta_esquerda),
+                                modifier = Modifier.size(32.dp),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.background
+                            )
+                        }
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.fillMaxWidth().height(16.dp))
+                }
+
                 items(postos, key = { it.id }) { posto ->
                     Box(
                         modifier = Modifier
